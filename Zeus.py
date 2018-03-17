@@ -86,6 +86,6 @@ class Zeus:
             sum('target').alias('ones')
         )\
         .withColumn('event_rate', 100 * col('ones') / col('num_records'))
-        .orderBy(['key', 'bucket'])
+        .orderBy('key', 'bucket')
 
         return biv.toPandas()
