@@ -85,7 +85,7 @@ class Zeus:
             max('val').alias('bucket_max'),
             sum('target').alias('ones')
         )\
-        .withColumn('event_rate', 100 * col('ones') / col('num_records'))
+        .withColumn('event_rate', 100 * col('ones') / col('num_records'))\
         .orderBy('key', 'bucket')
 
         return biv.toPandas()
