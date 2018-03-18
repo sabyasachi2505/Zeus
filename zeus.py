@@ -141,7 +141,7 @@ class Zeus:
             seed = kwargs['seed']
         else:
             seed = 43
-        return [zeus(x, targetColumn=self.targetColumn, idColumn=self.idColumn) for x in self.data.randomSplit(weights=standardized_args, seed=seed)]
+        return [Zeus(x, targetColumn=self.targetColumn, idColumn=self.idColumn) for x in self.data.randomSplit(weights=standardized_args, seed=seed)]
 
 
     def oversample(
