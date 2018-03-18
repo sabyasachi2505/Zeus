@@ -166,7 +166,7 @@ class Zeus:
             self.count = self.data.count()
 
         else:
-            warnings.warn('base event rate > provided ratio. no oversampling performed')
+            warnings.warn('base event rate >= provided ratio; no oversampling performed')
 
     def undersample(
             self,
@@ -190,4 +190,4 @@ class Zeus:
             self.count = self.data.count()
 
         else:
-            warnings.warn('base event rate > provided ratio. no undersampling performed')
+            warnings.warn('base event rate >= provided ratio; no undersampling performed')
