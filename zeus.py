@@ -132,11 +132,16 @@ class Zeus:
         else:
             args = list(args)
 
+        net = 0.0
+        for i in args:
+            net = net + i
+        standardized_args = [j / net for j in args]
+        
         if 'seed' in kwargs:
             seed = kwargs['seed']
         else:
             seed = 43
-        return [zeus(x, targetColumn=self.targetColumn, idColumn=self.idColumn) for x in self.data.randomSplit(weights=args, seed=seed)]
+        return [zeus(x, targetColumn=self.targetColumn, idColumn=self.idColumn) for x in self.data.randomSplit(weights=standardized_args, seed=seed)]
 
 
     def oversample(
