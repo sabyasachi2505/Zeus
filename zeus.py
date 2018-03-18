@@ -32,9 +32,9 @@ class Zeus:
         self.count = data.count()
 
     def show(self, n=5):
-        print('idColumn : ', self.idColumn)
-        print('targetColumn : ', self.targetColumn )
-        print('Number of observations : ', self.count)
+        print('idColumn : ' + self.idColumn)
+        print('targetColumn : ' + self.targetColumn )
+        print('Number of observations : {a}'.format(a=self.count))
         print('Sample data : ')
         self.data.show(n)
 
