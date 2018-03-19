@@ -50,7 +50,7 @@ class Zeus:
         else:
             percentiles = [0.01, 0.25, 0.5, 0.75, 0.99]
 
-        if any(percentile < 0 or percentile > 1 for percentile in percentile):
+        if any(percentile < 0 or percentile > 1 for percentile in percentiles):
             raise OutisdeRangeError("all values passed to the function must lie between 0 & 1")
 
         # Creating a list of variable names for which we would calculate the uni-variates
