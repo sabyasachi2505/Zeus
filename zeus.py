@@ -39,7 +39,7 @@ class Zeus:
         self.data.show(n)
 
     def dtypes(self):
-        return self.data.dtypes()
+        return self.data.dtypes
 
     def uniVariate(
             self,
