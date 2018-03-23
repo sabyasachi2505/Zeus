@@ -3,9 +3,9 @@
 Zeus is designed to help data scientists in pySpark do the pre-modeling data processing steps without having to write too much code. As this is a pet project of mine to help my teammates, I have implemented the following :
 
 ## Basic functionalities of pySpark Dataframes
-keep - lets you keep the selected columns (similar to select)
-drop - lets you drop selected columns (similar to drop)
-show - shows you a sample of the data and other attributes of the class (similar to show)
+keep - lets you keep the selected columns (similar to select) \\
+drop - lets you drop selected columns (similar to drop) \\
+show - shows you a sample of the data and other attributes of the class (similar to show) \\
 dtypes - shows you the datatypes of various columns (simialr to dtypes)
 
 ## Advanced functionalities
