@@ -33,13 +33,13 @@ class Zeus:
 
     def show(self, n=5):
         print('idColumn : ' + self.idColumn)
-        print('targetColumn : ' + self.targetColumn )
+        print('targetColumn : ' + self.targetColumn)
         print('Number of observations : {a}'.format(a=self.count))
         print('Sample data : ')
         self.data.show(n)
 
     def dtypes(self):
-        return self.data.dtypes
+        return self.data.dtypes()
 
     def uniVariate(
             self,
@@ -50,7 +50,7 @@ class Zeus:
         else:
             percentiles = [0.01, 0.25, 0.5, 0.75, 0.99]
 
-        if any(percentile < 0 or percentile > 1 for percentile in percentiles):
+        if any(percentile < 0 or percentile > 1 for percentile in percentile):
             raise OutisdeRangeError("all values passed to the function must lie between 0 & 1")
 
         # Creating a list of variable names for which we would calculate the uni-variates
@@ -67,7 +67,7 @@ class Zeus:
 
         i = 0
         for lists in quantiles_transpose:
-            temp = str(int(percentiles[i]*100)) + "_percentile"
+            temp = str(int(percentiles[i] * 100)) + "_percentile"
             temp = [temp] + lists
             quantiles_transpose_v2.append(temp)
             i = i + 1
@@ -76,7 +76,7 @@ class Zeus:
         quantile_df = pd.DataFrame(quantiles_transpose_v2, columns=columns)
         uni_variate_df = df_describe.append(quantile_df)
         uni_variate_df_pd = uni_variate_df.set_index('summary').T
-        
+
         return uni_variate_df_pd
 
     def biVariate(
@@ -94,10 +94,10 @@ class Zeus:
         ])).alias("kvs")
 
         long_data = self.data.select(melter, self.targetColumn) \
-        .selectExpr(self.targetColumn, "kvs.key AS key", "kvs.val AS val")
+            .selectExpr(self.targetColumn, "kvs.key AS key", "kvs.val AS val")
 
         observations = self.count
-        split_val = [i/buckets for i in range(buckets, (observations * buckets) + 1, observations - 1)]
+        split_val = [i / buckets for i in range(buckets, (observations * buckets) + 1, observations - 1)]
         bucketizer = Bucketizer(splits=split_val, inputCol="row", outputCol="bucket")
 
         biv = bucketizer.transform(
@@ -108,15 +108,15 @@ class Zeus:
                 row_number().over(Window.partitionBy('key').orderBy('val')).alias('row')
             )
         ) \
-        .groupby('key', 'bucket')\
-        .agg(
+            .groupby('key', 'bucket') \
+            .agg(
             count('*').alias('num_records'),
             min('val').alias('bucket_min'),
             max('val').alias('bucket_max'),
             sum('target').alias('ones')
-        )\
-        .withColumn('event_rate', 100 * col('ones') / col('num_records')) \
-        .orderBy('key', 'bucket')
+        ) \
+            .withColumn('event_rate', 100 * col('ones') / col('num_records')) \
+            .orderBy('key', 'bucket')
 
         return biv.toPandas()
 
@@ -126,9 +126,11 @@ class Zeus:
             **kwargs
     ):
         if not args:
-            raise InvalidArgumentError('please pass the ratios to split the data\nSample usage: a,b = data.randomSplit(80,20, seed = 43)')
+            raise InvalidArgumentError(
+                'ratios not found \nSample usage: a,b = data.randomSplit(80,20, seed = 43)')
         elif len(args) < 2:
-            raise InvalidArgumentError('please pass at least 2 values to split the data\nSample usage: a,b = data.randomSplit(80,20, seed = 43)')
+            raise InvalidArgumentError(
+                'at least 2 values required\nSample usage: a,b = data.randomSplit(80,20, seed = 43)')
         else:
             args = list(args)
 
@@ -136,13 +138,13 @@ class Zeus:
         for i in args:
             net = net + i
         standardized_args = [j / net for j in args]
-        
+
         if 'seed' in kwargs:
             seed = kwargs['seed']
         else:
             seed = 43
-        return [Zeus(x, targetColumn=self.targetColumn, idColumn=self.idColumn) for x in self.data.randomSplit(weights=standardized_args, seed=seed)]
-
+        return [Zeus(x, targetColumn=self.targetColumn, idColumn=self.idColumn) for x in
+                self.data.randomSplit(weights=standardized_args, seed=seed)]
 
     def oversample(
             self,
@@ -158,15 +160,38 @@ class Zeus:
 
         if ratio > base_event_rate:
 
-            sample_ratio = ((ratio / (1 - ratio)) * (float(observations)/events) - 1) - 1
+            sample_ratio = ((ratio / (1 - ratio)) * (float(observations) / events) - 1) - 1
 
             self.data = self.data.union(
                 positives.sample(True, sample_ratio, seed)
             )
             self.count = self.data.count()
+            print('The data has been oversampled to attain the desired ratio')
+            self.show(5)
 
         else:
             warnings.warn('base event rate >= provided ratio; no oversampling performed')
+
+    def keep(
+            self,
+            *args
+    ):
+        columns_to_keep = set(args)
+        columns_to_keep = columns_to_keep.union(self.idColumn).union(self.targetColumn)
+
+        self.data = self.data.select(*columns_to_keep)
+
+    def drop(
+            self,
+            *args
+    ):
+        columns_to_drop = set(args)
+        if self.idColumn in columns_to_drop:
+            warnings.warn('The id column has been dropped')
+        if self.targetColumn in columns_to_drop:
+            warnings.warn('The target column has been dropped')
+        self.data = self.data.drop(*columns_to_drop)
+
 
     def undersample(
             self,
@@ -188,6 +213,8 @@ class Zeus:
                 self.data.filter(col('target') != eventValue).sample(False, sample_ratio, seed)
             )
             self.count = self.data.count()
+            print('The data has been undersampled to attain the desired ratio')
+            self.show(5)
 
         else:
             warnings.warn('base event rate >= provided ratio; no undersampling performed')
