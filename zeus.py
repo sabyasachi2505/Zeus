@@ -166,7 +166,7 @@ class Zeus:
                 positives.sample(True, sample_ratio, seed)
             )
             self.count = self.data.count()
-            print('The data has been oversampled to attain the desired ratio')
+            print('Oversampling complete ...')
             self.show(5)
 
         else:
@@ -213,7 +213,7 @@ class Zeus:
                 self.data.filter(col('target') != eventValue).sample(False, sample_ratio, seed)
             )
             self.count = self.data.count()
-            print('The data has been undersampled to attain the desired ratio')
+            print('Undersampling complete ...')
             self.show(5)
 
         else:
