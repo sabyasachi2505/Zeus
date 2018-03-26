@@ -34,7 +34,7 @@ class Zeus(object):
         self.count = data.count()
 
     def __repr__(self):
-        return 'Dataframe(idColumn = %s, targetColumn = %s, Observations = %s)', % (self.idColumn, self.targetColumn, self.count)
+        return 'Dataframe(idColumn = %s, targetColumn = %s, Observations = %s)' % (self.idColumn, self.targetColumn, self.count)
 
 
     def show(self, n=5):
