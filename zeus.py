@@ -14,22 +14,28 @@ class InvalidArgumentError(ValueError):
     pass
 
 
-class Zeus:
+class Zeus(object):
+    """
+    This class has been designed to help perform data processing and pre-modeling steps on big data. Zeus takes pyspark
+    dataframes as input and offers a host of methods on top of them.
+    """
 
-    def __init__(
-            self,
-            data=None,
-            targetColumn='target',
-            idColumn='liveramp_id'
-    ):
+
+    def __init__(self, data=None, targetColumn='target', idColumn='liveramp_id'):
+
         if not data:
             raise InvalidArgumentError('Zeus needs a pyspark dataframe to initialize')
         if str(type(data)) != "<class 'pyspark.sql.dataframe.DataFrame'>":
             raise InvalidArgumentError('Zeus only accepts pyspark dataframes')
+
         self.data = data
         self.targetColumn = targetColumn
         self.idColumn = idColumn
         self.count = data.count()
+
+    def __repr__(self):
+        return 'Dataframe(idColumn = %s, targetColumn = %s, Observations = %s)', % (self.idColumn, self.targetColumn, self.count)
+
 
     def show(self, n=5):
         print('idColumn : ' + self.idColumn)
@@ -41,16 +47,13 @@ class Zeus:
     def dtypes(self):
         return self.data.dtypes()
 
-    def uniVariate(
-            self,
-            *args
-    ):
+    def uniVariate(self, *args):
         if args:
             percentiles = list(args)
         else:
             percentiles = [0.01, 0.25, 0.5, 0.75, 0.99]
 
-        if any(percentile < 0 or percentile > 1 for percentile in percentile):
+        if any(percentile < 0 or percentile > 1 for percentile in percentiles):
             raise OutisdeRangeError("all values passed to the function must lie between 0 & 1")
 
         # Creating a list of variable names for which we would calculate the uni-variates
@@ -79,11 +82,7 @@ class Zeus:
 
         return uni_variate_df_pd
 
-    def biVariate(
-            self,
-            columns=None,
-            buckets=5
-    ):
+    def biVariate(self, columns=None, buckets=5):
         if not columns:
             columns = self.data.drop(self.targetColumn, self.idColumn).columns
 
@@ -108,23 +107,19 @@ class Zeus:
                 row_number().over(Window.partitionBy('key').orderBy('val')).alias('row')
             )
         ) \
-            .groupby('key', 'bucket') \
-            .agg(
+        .groupby('key', 'bucket') \
+        .agg(
             count('*').alias('num_records'),
             min('val').alias('bucket_min'),
             max('val').alias('bucket_max'),
             sum('target').alias('ones')
         ) \
-            .withColumn('event_rate', 100 * col('ones') / col('num_records')) \
-            .orderBy('key', 'bucket')
+        .withColumn('event_rate', 100 * col('ones') / col('num_records')) \
+        .orderBy('key', 'bucket')
 
         return biv.toPandas()
 
-    def randomSplit(
-            self,
-            *args,
-            **kwargs
-    ):
+    def randomSplit(self, *args, **kwargs):
         if not args:
             raise InvalidArgumentError(
                 'ratios not found \nSample usage: a,b = data.randomSplit(80,20, seed = 43)')
@@ -146,12 +141,7 @@ class Zeus:
         return [Zeus(x, targetColumn=self.targetColumn, idColumn=self.idColumn) for x in
                 self.data.randomSplit(weights=standardized_args, seed=seed)]
 
-    def oversample(
-            self,
-            ratio,
-            eventValue=1,
-            seed=42
-    ):
+    def oversample(self, ratio, eventValue=1, seed=42):
         observations = self.count
         positives = self.data.filter(col(self.targetColumn) == eventValue)
         events = positives.count()
@@ -166,25 +156,19 @@ class Zeus:
                 positives.sample(True, sample_ratio, seed)
             )
             self.count = self.data.count()
-            print('Oversampling complete ...')
+            print('The data has been oversampled to attain the desired ratio')
             self.show(5)
 
         else:
             warnings.warn('base event rate >= provided ratio; no oversampling performed')
 
-    def keep(
-            self,
-            *args
-    ):
+    def keep(self, *args):
         columns_to_keep = set(args)
         columns_to_keep = columns_to_keep.union(self.idColumn).union(self.targetColumn)
 
         self.data = self.data.select(*columns_to_keep)
 
-    def drop(
-            self,
-            *args
-    ):
+    def drop(self, *args):
         columns_to_drop = set(args)
         if self.idColumn in columns_to_drop:
             warnings.warn('The id column has been dropped')
@@ -193,12 +177,7 @@ class Zeus:
         self.data = self.data.drop(*columns_to_drop)
 
 
-    def undersample(
-            self,
-            ratio,
-            eventValue=1,
-            seed=42
-    ):
+    def undersample(self, ratio, eventValue=1, seed=42):
         observations = self.count
         positives = self.data.filter(col(self.targetColumn) == eventValue)
         events = positives.count()
@@ -213,7 +192,7 @@ class Zeus:
                 self.data.filter(col('target') != eventValue).sample(False, sample_ratio, seed)
             )
             self.count = self.data.count()
-            print('Undersampling complete ...')
+            print('The data has been undersampled to attain the desired ratio')
             self.show(5)
 
         else:
