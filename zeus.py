@@ -34,7 +34,7 @@ class Zeus(object):
         self.count = data.count()
 
     def __repr__(self):
-        return 'Dataframe(idColumn = %s, targetColumn = %s, Observations = %s)' % (self.idColumn, self.targetColumn, self.count)
+        return 'ZeusDataframe(idColumn = %s, targetColumn = %s, Observations = %s)' % (self.idColumn, self.targetColumn, self.count)
 
 
     def show(self, n=5):
@@ -45,7 +45,7 @@ class Zeus(object):
         self.data.show(n)
 
     def dtypes(self):
-        return self.data.dtypes()
+        return self.data.dtypes
 
     def uniVariate(self, *args):
         if args:
