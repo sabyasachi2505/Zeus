@@ -36,6 +36,8 @@ class Zeus(object):
     def __repr__(self):
         return 'ZeusDataframe(idColumn = %s, targetColumn = %s, Observations = %s)' % (self.idColumn, self.targetColumn, self.count)
 
+    def __str__(self):
+        return 'ZeusDataframe(idColumn = %s, targetColumn = %s, Observations = %s)' % (self.idColumn, self.targetColumn, self.count)
 
     def show(self, n=5):
         print('idColumn : ' + self.idColumn)
