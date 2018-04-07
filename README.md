@@ -1,9 +1,13 @@
 # Zeus
 
-Zeus is designed to help data scientists in pySpark do the pre-modeling data processing steps without having to write too much code. I have implemented the following :
+Zeus is designed to help data scientists in pySpark do the pre-modeling data processing steps without having to write too much code.
 
 Author : Sabyasachi Mishra
 
+## The basic idea
+
+>Zeus class is aimed at helping simplify the pre-modeling steps. Hence, the existence of a target column and an id column is a must. The generic functions applicable on pyspark dataframes would work on Zeus as well.
+Zeus class stores a set of values in addition to the original pyspark dataframe. These include the targetColumn (supposed to be the column containing the prediction)
 
 ## Basic functionalities of pySpark Dataframes
 [columns](#columns) - lets you see all the column names present in the data <br />
@@ -37,6 +41,7 @@ data.columns returns a list of column names. The first 2 names in the list repre
 data.keep('spend', 'transactions')
 print (data.columns)
 ```
+keep lets you retain specific features and deletes the rest. This method modifies the dataset itself.
 ```python
 ['id', 'target', 'spend', 'transactions']
 ```
