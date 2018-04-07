@@ -6,7 +6,7 @@ Author : Sabyasachi Mishra
 
 
 ## Basic functionalities of pySpark Dataframes
-keep - lets you keep the selected columns (similar to select) <br />
+[keep](#keep) - lets you keep the selected columns (similar to select) <br />
 drop - lets you drop selected columns (similar to drop) <br />
 show - shows you a sample of the data and other attributes of the class (similar to show) <br />
 dtypes - shows you the datatypes of various columns (simialr to dtypes) <br />
@@ -20,5 +20,13 @@ randomSplit - splits the data into multiple Zeus objects depending on the ratios
 
 ## All of the above are methods of class Zeus
 
-###keep
+###Keep
+
+'''python
+print (data.columns)
+data.keep('spend', 'transactions')
+print (data.columns)
+''' <br />
+['id', 'spend', 'timestamp', 'transactions', 'age_bucket', 'target']
+['id', 'spend', 'transactions', 'target']
 
