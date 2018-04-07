@@ -49,6 +49,9 @@ class Zeus(object):
     def dtypes(self):
         return self.data.dtypes
 
+    def columns(self):
+        return [self.idColumn, self.targetColumn] + self.data.drop(self.idColumn, self.targetColumn).columns
+
     def uniVariate(self, *args):
         if args:
             percentiles = list(args)
@@ -172,11 +175,20 @@ class Zeus(object):
 
     def drop(self, *args):
         columns_to_drop = set(args)
+        ind = 0
         if self.idColumn in columns_to_drop:
-            warnings.warn('The id column has been dropped')
+            warnings.warn('Dropping the idColumn makes the class unstable. \n'
+                          'Hence a pyspark dataframe would be returned instead of modifying the Zeus object')
+            ind = 1
         if self.targetColumn in columns_to_drop:
-            warnings.warn('The target column has been dropped')
-        self.data = self.data.drop(*columns_to_drop)
+            warnings.warn('Dropping the targetColumn makes the class unstable. \n'
+                          'Hence a pyspark dataframe would be returned instead of modifying the Zeus object')
+            ind = 1
+        if ind == 0:
+            self.data = self.data.drop(*columns_to_drop)
+        else:
+            return self.data.drop(*columns_to_drop)
+
 
 
     def undersample(self, ratio, eventValue=1, seed=42):
