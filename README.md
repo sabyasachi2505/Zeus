@@ -22,11 +22,11 @@ randomSplit - splits the data into multiple Zeus objects depending on the ratios
 
 ###Keep
 
-'''python
+```python
 print (data.columns)
 data.keep('spend', 'transactions')
 print (data.columns)
-''' <br />
-['id', 'spend', 'timestamp', 'transactions', 'age_bucket', 'target']
+```
+['id', 'spend', 'timestamp', 'transactions', 'age_bucket', 'target'] <br />
 ['id', 'spend', 'transactions', 'target']
 
