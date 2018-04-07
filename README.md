@@ -2,14 +2,29 @@
 
 Zeus is designed to help data scientists in pySpark do the pre-modeling data processing steps without having to write too much code.
 
-Author : Sabyasachi Mishra
-
 ## The basic idea
 
->Zeus class is aimed at helping simplify the pre-modeling steps. Hence, the existence of a target column and an id column is a must. The generic functions applicable on pyspark dataframes would work on Zeus as well.
-Zeus class stores a set of values in addition to the original pyspark dataframe. These include the targetColumn (supposed to be the column containing the prediction)
+>Zeus class aims to simplify the pre-modeling steps.
+Hence, the existence of a target column and an id column is a must.
+The generic functions applicable on pyspark dataframes would work on Zeus as well.
+Most of the methods work on binary as well as multi-class targets.
 
-## Basic functionalities of pySpark Dataframes
+## List of Methods available
+
+| Name of Method    |  Function     |
+| :-----------------|:-------------:|
+| columns           |returns a list of column names present in the data|
+| show              |shows n columns in the data                       |
+| dtypes            |returns a list of tuples containing column names and their respective data types|
+| drop              |drops specific columns from the Zeus object (Returns a pyspark dataframe in case the id / target column is dropped)|
+| keep              |keeps specific columns in the Zeus object and drops the rest (id and target columns are automatically retained)|
+| univariate        |returns a pandas DataFrame with percentile distributions of all the variables|
+| bivariate         |returns a pandas DataFrame with event rates per percentile buckets of each predictor variable|
+| oversample        |increases the event rate of the data by duplicating event occurrences |
+| undersample       |increases the event rate of the data by removing randomly sampled non-event occurrences|
+
+
+
 [columns](#columns) - lets you see all the column names present in the data <br />
 [keep](#keep) - lets you keep the selected columns (similar to select) <br />
 
