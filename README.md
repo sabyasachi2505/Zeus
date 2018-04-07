@@ -12,16 +12,16 @@ Most of the methods work on binary as well as multi-class targets.
 ## List of Methods available
 
 | Name of Method    |  Function     |
-| :-----------------|:-------------:|
+| :-----------------|:------------- |
 | columns           |returns a list of column names present in the data|
 | show              |shows n columns in the data                       |
-| dtypes            |returns a list of tuples containing column names and their respective data types|
-| drop              |drops specific columns from the Zeus object (Returns a pyspark dataframe in case the id / target column is dropped)|
-| keep              |keeps specific columns in the Zeus object and drops the rest (id and target columns are automatically retained)|
-| univariate        |returns a pandas DataFrame with percentile distributions of all the variables|
-| bivariate         |returns a pandas DataFrame with event rates per percentile buckets of each predictor variable|
-| oversample        |increases the event rate of the data by duplicating event occurrences |
-| undersample       |increases the event rate of the data by removing randomly sampled non-event occurrences|
+| dtypes            |returns a list of tuples containing column names <br />and their respective data types|
+| drop              |drops specific columns from the Zeus object <br />(Returns a pyspark dataframe in case the id / target column is dropped)|
+| keep              |keeps specific columns in the Zeus object and <br />drops the rest (id and target columns are automatically retained)|
+| univariate        |returns a pandas DataFrame with percentile  <br />distributions of all the variables|
+| bivariate         |returns a pandas DataFrame with event rates per <br />percentile buckets of each predictor variable|
+| oversample        |increases the event rate of the data by randomly <br />duplicating samples of event occurrences |
+| undersample       |increases the event rate of the data by removing <br />randomly sampled non-event occurrences|
 
 
 
