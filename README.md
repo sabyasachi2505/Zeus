@@ -6,7 +6,7 @@ Author : Sabyasachi Mishra
 
 
 ## Basic functionalities of pySpark Dataframes
-#[[columns]] - lets you see all the column names present in the data <br />
+[columns](#columns) - lets you see all the column names present in the data <br />
 [keep](#keep) - lets you keep the selected columns (similar to select) <br />
 
 drop - lets you drop selected columns (similar to drop) <br />
