@@ -2,6 +2,9 @@
 
 Zeus is designed to help data scientists in pySpark do the pre-modeling data processing steps without having to write too much code. I have implemented the following :
 
+Author : Sabyasachi Mishra
+
+
 ## Basic functionalities of pySpark Dataframes
 keep - lets you keep the selected columns (similar to select) <br />
 drop - lets you drop selected columns (similar to drop) <br />
@@ -16,3 +19,6 @@ oversample - increases the event rate of the data by repeating a random sample o
 randomSplit - splits the data into multiple Zeus objects depending on the ratios provided <br />
 
 ## All of the above are methods of class Zeus
+
+###keep
+
