@@ -2,6 +2,7 @@
 
 Zeus is designed to help data scientists in pySpark do the pre-modeling data processing steps without having to write too much code.
 
+
 ## The basic idea
 
 >Zeus class aims to simplify the pre-modeling steps.
@@ -9,35 +10,22 @@ Hence, the existence of a target column and an id column is a must.
 The generic functions applicable on pyspark dataframes would work on Zeus as well.
 Most of the methods work on binary as well as multi-class targets.
 
+
 ## List of Methods available
 
 | Name of Method    |  Function     |
 | :-----------------|:------------- |
 | columns           |returns a list of column names present in the data|
-| show              |shows n columns in the data                       |
+| show              |shows n sample observations in the data                       |
 | dtypes            |returns a list of tuples containing column names <br />and their respective data types|
-| drop              |drops specific columns from the Zeus object <br />(Returns a pyspark dataframe in case the id / target column is dropped)|
-| keep              |keeps specific columns in the Zeus object and <br />drops the rest (id and target columns are automatically retained)|
-| univariate        |returns a pandas DataFrame with percentile  <br />distributions of all the variables|
+| drop              |drops specific columns from the Zeus object<br />(Returns a pyspark dataframe in case the id / target column is dropped)|
+| keep              |keeps specific columns in the Zeus object and drops the rest<br />(id and target columns are automatically retained)|
+| univariate        |returns a pandas DataFrame containing percentile distributions of all<br />the variables along with their count, mean, median etc|
 | bivariate         |returns a pandas DataFrame with event rates per <br />percentile buckets of each predictor variable|
 | oversample        |increases the event rate of the data by randomly <br />duplicating samples of event occurrences |
 | undersample       |increases the event rate of the data by removing <br />randomly sampled non-event occurrences|
+| randomSplit       |splits the Zeus object into multiple Zeus objects in the provided ratio |
 
-
-
-[columns](#columns) - lets you see all the column names present in the data <br />
-[keep](#keep) - lets you keep the selected columns (similar to select) <br />
-
-drop - lets you drop selected columns (similar to drop) <br />
-show - shows you a sample of the data and other attributes of the class (similar to show) <br />
-dtypes - shows you the datatypes of various columns (simialr to dtypes) <br />
-
-## Advanced functionalities
-uniVariate - returns a pandas dataframe containing various percentiles, count, mean, meadian etc for each column <br />
-biVariate - returns a pandas dataframe containing the event rate across various percentile buckets of each column <br />
-undersample - increases the event rate of the data by removing a random sample of non-events <br />
-oversample - increases the event rate of the data by repeating a random sample of events <br />
-randomSplit - splits the data into multiple Zeus objects depending on the ratios provided <br />
 
 ## All of the above are methods of class Zeus
 
