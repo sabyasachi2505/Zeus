@@ -70,10 +70,22 @@ print (datatypes)
 
 ### Retaining specific columns in the data
 ```python
-data.keep('amount', 'transaction\_id')
+data.keep('amount', 'transaction_id')
 print (data.columns)
 ```
 >.keep() lets you retain specific features and deletes the rest. This method modifies the dataset itself. It retains the idColumn and targetColumn by default.
 ```python
-['user\_id', 'target', 'amount', 'transaction\_id']
+['user_id', 'target', 'amount', 'transaction_id']
+```
+
+### Deleting specific columns from the data
+```python
+# We are assuming that the data contains all the original columns ('user_id', 'target', 'amount', 'timestamp', 'transaction_id', 'item_id')
+data.drop('amount', 'transaction_id')
+print (data.columns)
+```
+>.drop() lets you drop specific features. This method modifies the dataset itself. As retaining the idColumn and targetColumn are essential to Zeus objects, if you accidentally pass these column names into the drop command, the original object is not modified. Instead a pySpark dataframe is returned after deleting the mentioned columns from the data. So, .drop() can be used to either modify (reduce the size of) the Zeus object or extract a certain subset of the data minus the id and/or target columns.
+
+```python
+['user_id', 'target', 'timestamp', 'item_id']
 ```
