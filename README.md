@@ -27,9 +27,28 @@ Most of the methods work on binary as well as multi-class targets.
 | randomSplit       |splits the Zeus object into multiple Zeus objects in the provided ratio |
 
 
-## All of the above are methods of class Zeus
+## Examples
 
-###columns
+### Initializing a Zeus object
+```python
+from Zeus import Zeus
+zdata = Zeus(data, targetColumn = "target", idColumn = "user_id")
+zdata.show(5)
+```
+Passing a pyspark dataframe into Zeus, converts it into a Zeus object. Now, we can see how the Zeus data loooks like.
+
+```python
+idColumn : 
+targetColumn : 
+Number of Observations : 
+Sample Data :
+```
+| user\_id  | spend | timestamp | target |
+|:---------:|:-----:|:---------:|:------:|
+|1s3e4452de|10|2018-04-03 12:04:45|1|
+|1s3f4329sc|54|2018-05-03 16:04:45|0|
+
+### columns
 ```python
 print (data.columns)
 ```
