@@ -70,8 +70,8 @@ print (datatypes)
 
 ### Retaining specific columns in the data
 ```python
-data.keep('amount', 'transaction_id')
-print (data.columns)
+zdata.keep('amount', 'transaction_id')
+print (zdata.columns)
 ```
 >.keep() lets you retain specific features and deletes the rest. This method modifies the dataset itself. It retains the idColumn and targetColumn by default.
 ```python
@@ -81,11 +81,25 @@ print (data.columns)
 ### Deleting specific columns from the data
 ```python
 # We are assuming that the data contains all the original columns ('user_id', 'target', 'amount', 'timestamp', 'transaction_id', 'item_id')
-data.drop('amount', 'transaction_id')
-print (data.columns)
+zdata.drop('amount', 'transaction_id')
+print (zdata.columns)
 ```
 >.drop() lets you drop specific features. This method modifies the dataset itself. As retaining the idColumn and targetColumn are essential to Zeus objects, if you accidentally pass these column names into the drop command, the original object is not modified. Instead a pySpark dataframe is returned after deleting the mentioned columns from the data. So, .drop() can be used to either modify (reduce the size of) the Zeus object or extract a certain subset of the data minus the id and/or target columns.
 
 ```python
 ['user_id', 'target', 'timestamp', 'item_id']
+```
+
+### Analyzing variable percentile distributions
+```python
+data_univariate = zdata.univariate(0.03, 0.04, 0.5 0.7, 0.9)
+data_univariate
+```
+>.univariate() returns a pandas dataframe containing the variable distributions of each column. Specific percentiles can be passed as arguements. In case no arguements are passed, these are calculated by default 0.01, 0.25, 0.5. 0.75, 0.99. In addition to these percentiles, the count of observations, the mean, the minimum value, the maximum value and standard deviation are also calculated.
+
+```python
+column_name|count|mean|stddev|min|max|0.03 percentile|0.04 percentile|0.5 percentile|0.7 percentile|0.9 percentile|
+:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+target|261437|0.047632891|0.212988666|0|1|0|0|0|1|1|
+amount|261437|0.079648252|0.270748385|0|1|0|0|0|1|1|
 ```
