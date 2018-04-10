@@ -53,25 +53,27 @@ Sample Data :
 colnames = zdata.columns()
 print (colnames)
 ```
->zdata.columns returns a list object containing the column names present in the data. The first 2 names in the list represent the idColumn and the targetColumn.
+>.columns returns a list object containing the column names present in the data. The first 2 names in the list represent the idColumn and the targetColumn.
 
 ```python
 ['user_id', 'target', 'amount', 'timestamp', 'transaction_id', 'item_id']
 ```
-
-
-
+### Seeing the datatypes of various columns present in the data
 ```python
-
+datatypes = zdata.dtypes()
+print (datatypes)
+```
+>.dtypes returns a list of tuples containing column name and their respective type.
+```python
+[('user_id', 'string'), ('amount','bigint'), ('timestamp','timestamp'), ('transaction_id', 'string'), ('item_id', 'string'), ('target','int')]
 ```
 
-###keep
-
+### Retaining specific columns in the data
 ```python
-data.keep('spend', 'transactions')
+data.keep('amount', 'transaction\_id')
 print (data.columns)
 ```
-keep lets you retain specific features and deletes the rest. This method modifies the dataset itself.
+>.keep() lets you retain specific features and deletes the rest. This method modifies the dataset itself. It retains the idColumn and targetColumn by default.
 ```python
-['id', 'target', 'spend', 'transactions']
+['user\_id', 'target', 'amount', 'transaction\_id']
 ```
