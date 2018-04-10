@@ -31,30 +31,38 @@ Most of the methods work on binary as well as multi-class targets.
 
 ### Initializing a Zeus object
 ```python
-from Zeus import Zeus
+from zeus import Zeus
 zdata = Zeus(data, targetColumn = "target", idColumn = "user_id")
-zdata.show(5)
+zdata.show(2)
 ```
-Passing a pyspark dataframe into Zeus, converts it into a Zeus object. Now, we can see how the Zeus data loooks like.
+>Zeus helps us convert a pyspark DataFrame to a Zeus object. Now, we can see how the Zeus data loooks like.
 
 ```python
-idColumn : 
-targetColumn : 
-Number of Observations : 
+idColumn : user_id
+targetColumn : target
+Number of Observations : 120324
 Sample Data :
 ```
-| user\_id  | spend | timestamp | target |
-|:---------:|:-----:|:---------:|:------:|
-|1s3e4452de|10|2018-04-03 12:04:45|1|
-|1s3f4329sc|54|2018-05-03 16:04:45|0|
+| user\_id  | amount | timestamp |transaction\_id|item\_id| target |
+|:---------:|:-----:|:---------:|:--------------:|:------:|:------:|
+|1s3e4452de|10|2018-04-03 12:04:45|18me10052|r1c173fe|1|
+|1s3f4329sc|54|2018-05-03 16:04:45|18ch13324|r2c532cz|0|
 
-### columns
+### Listing the columns present in the data
 ```python
-print (data.columns)
+colnames = zdata.columns()
+print (colnames)
 ```
-data.columns returns a list of column names. The first 2 names in the list represent the idColumn and the targetColumn
+>zdata.columns returns a list object containing the column names present in the data. The first 2 names in the list represent the idColumn and the targetColumn.
+
 ```python
-['id', 'target', 'spend', 'timestamp', 'transactions', 'age_bucket']
+['user_id', 'target', 'amount', 'timestamp', 'transaction_id', 'item_id']
+```
+
+
+
+```python
+
 ```
 
 ###keep
