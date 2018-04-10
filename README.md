@@ -95,9 +95,26 @@ print (zdata.columns)
 data_univariate = zdata.univariate(0.03, 0.04, 0.5)
 data_univariate
 ```
->.univariate() returns a pandas dataframe containing the variable distributions of each column. Specific percentiles can be passed as arguements. In case no arguements are passed, these are calculated by default 0.01, 0.25, 0.5. 0.75, 0.99. In addition to these percentiles, the count of observations, the mean, the minimum value, the maximum value and standard deviation are also calculated.
+>.univariate() returns a pandas dataframe containing the variable distributions of each numeric column. Specific percentiles can be passed as arguements. In case no arguements are passed, these are calculated by default 0.01, 0.25, 0.5. 0.75, 0.99. In addition to these percentiles, the count of observations, the mean, the minimum value, the maximum value and standard deviation are also calculated. The columns which have non-numeric data types like timestamp / string / struct type etc are automatically not considered here.
 
 |column\_name|count|mean |stddev| min |  max  | 0.03 percentile|0.04 percentile|0.5 percentile|
 |:----------:|:---:|:---:|:----:|:---:|:-----:|:--------------:|:-------------:|:------------:|
 |target      |26147|0.047|0.2129|0    |1      |0               |0              |0             |
 |amount      |26147|0.079|0.2707|0    |1      |0               |0              |0             |
+
+### Analyzing event rates across variables' percentile buckets
+```python
+data_bivariate = zdata.bivariate(0.03, 0.04, 0.5)
+data_bivariate
+```
+>.bivariate() returns a pandas dataframe containing the event rate seen across percentile distributions of each numeric column. Specific percentiles can be passed as arguements. In case no arguements are passed, these are calculated by default 0.01, 0.25, 0.5. 0.75, 0.99. In addition to these percentiles, the count of observations, the mean, the minimum value, the maximum value and standard deviation are also calculated. The columns which have non-numeric data types like timestamp / string / struct type etc are automatically not considered here.
+
+|column\_name|bucket|num\_records | min |  max  | num\_events|event\_rate|
+|:----------:|:----:|:-----------:|:---:|:-----:|:----------:|:---------:|
+|amount      |0     |24086        |0    |0      |4817        |20.2       |
+|amount      |1     |24086        |0    |0      |1           |0          |
+|amount      |2     |24086        |0    |0      |1           |0          |
+|amount      |3     |24086        |0    |1      |12023       |50         |
+|amount      |4     |24086        |1    |1      |24086       |100        |
+
+
