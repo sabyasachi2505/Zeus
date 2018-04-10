@@ -107,7 +107,7 @@ data_univariate
 data_bivariate = zdata.bivariate(0.03, 0.04, 0.5)
 data_bivariate
 ```
->.bivariate() returns a pandas dataframe containing the event rate seen across percentile distributions of each numeric column. Specific percentiles can be passed as arguements. In case no arguements are passed, these are calculated by default 0.01, 0.25, 0.5. 0.75, 0.99. In addition to these percentiles, the count of observations, the mean, the minimum value, the maximum value and standard deviation are also calculated. The columns which have non-numeric data types like timestamp / string / struct type etc are automatically not considered here.
+>.bivariate() returns a pandas dataframe containing the event rate seen across percentile distributions of each numeric column. Specific percentiles can be passed as arguements. In case no arguements are passed, these percentiles are calculated by default 0.01, 0.25, 0.5. 0.75, 0.99. In addition to these percentiles, the count of observations, the mean, the minimum value, the maximum value and standard deviation are also calculated. The columns which have non-numeric data types like timestamp / string / struct type etc are automatically not considered here.
 
 |column\_name|bucket|num\_records | min |  max  | num\_events|event\_rate|
 |:----------:|:----:|:-----------:|:---:|:-----:|:----------:|:---------:|
@@ -117,4 +117,10 @@ data_bivariate
 |amount      |3     |24086        |0    |1      |12023       |50         |
 |amount      |4     |24086        |1    |1      |24086       |100        |
 
-
+### Oversampling the data
+```python
+print (zdata.count)
+zdata.oversample(0.4)
+print (zdata.count)
+```
+>
