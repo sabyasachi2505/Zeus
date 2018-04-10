@@ -92,12 +92,12 @@ print (zdata.columns)
 
 ### Analyzing variable percentile distributions
 ```python
-data_univariate = zdata.univariate(0.03, 0.04, 0.5 0.7, 0.9)
+data_univariate = zdata.univariate(0.03, 0.04, 0.5)
 data_univariate
 ```
 >.univariate() returns a pandas dataframe containing the variable distributions of each column. Specific percentiles can be passed as arguements. In case no arguements are passed, these are calculated by default 0.01, 0.25, 0.5. 0.75, 0.99. In addition to these percentiles, the count of observations, the mean, the minimum value, the maximum value and standard deviation are also calculated.
 
-|column\_name|count|mean |stddev| min |  max  | 0.03 percentile|0.04 percentile|0.5 percentile|0.7 percentile|0.9 percentile|
-|:----------:|:---:|:---:|:----:|:---:|:-----:|:--------------:|:-------------:|:------------:|:------------:|:------------:|
-|target      |26147|0.047|0.2129|0    |1      |0               |0              |0             |1             |1             |
-|amount      |26147|0.079|0.2707|0    |1      |0               |0              |0             |1             |1             |
+|column\_name|count|mean |stddev| min |  max  | 0.03 percentile|0.04 percentile|0.5 percentile|
+|:----------:|:---:|:---:|:----:|:---:|:-----:|:--------------:|:-------------:|:------------:|
+|target      |26147|0.047|0.2129|0    |1      |0               |0              |0             |
+|amount      |26147|0.079|0.2707|0    |1      |0               |0              |0             |
