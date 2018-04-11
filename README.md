@@ -53,25 +53,74 @@ Sample Data :
 colnames = zdata.columns()
 print (colnames)
 ```
->zdata.columns returns a list object containing the column names present in the data. The first 2 names in the list represent the idColumn and the targetColumn.
+>.columns returns a list object containing the column names present in the data. The first 2 names in the list represent the idColumn and the targetColumn.
 
 ```python
 ['user_id', 'target', 'amount', 'timestamp', 'transaction_id', 'item_id']
 ```
-
-
-
+### Seeing the datatypes of various columns present in the data
 ```python
-
+datatypes = zdata.dtypes()
+print (datatypes)
+```
+>.dtypes returns a list of tuples containing column name and their respective type.
+```python
+[('user_id', 'string'), ('amount','bigint'), ('timestamp','timestamp'), ('transaction_id', 'string'), ('item_id', 'string'), ('target','int')]
 ```
 
-###keep
+### Retaining specific columns in the data
+```python
+zdata.keep('amount', 'transaction_id')
+print (zdata.columns)
+```
+>.keep() lets you retain specific features and deletes the rest. This method modifies the dataset itself. It retains the idColumn and targetColumn by default.
+```python
+['user_id', 'target', 'amount', 'transaction_id']
+```
+
+### Deleting specific columns from the data
+```python
+# We are assuming that the data contains all the original columns ('user_id', 'target', 'amount', 'timestamp', 'transaction_id', 'item_id')
+zdata.drop('amount', 'transaction_id')
+print (zdata.columns)
+```
+>.drop() lets you drop specific features. This method modifies the dataset itself. As retaining the idColumn and targetColumn are essential to Zeus objects, if you accidentally pass these column names into the drop command, the original object is not modified. Instead a pySpark dataframe is returned after deleting the mentioned columns from the data. So, .drop() can be used to either modify (reduce the size of) the Zeus object or extract a certain subset of the data minus the id and/or target columns.
 
 ```python
-data.keep('spend', 'transactions')
-print (data.columns)
+['user_id', 'target', 'timestamp', 'item_id']
 ```
-keep lets you retain specific features and deletes the rest. This method modifies the dataset itself.
+
+### Analyzing variable percentile distributions
 ```python
-['id', 'target', 'spend', 'transactions']
+data_univariate = zdata.univariate(0.03, 0.04, 0.5)
+data_univariate
 ```
+>.univariate() returns a pandas dataframe containing the variable distributions of each numeric column. Specific percentiles can be passed as arguements. In case no arguements are passed, these are calculated by default 0.01, 0.25, 0.5. 0.75, 0.99. In addition to these percentiles, the count of observations, the mean, the minimum value, the maximum value and standard deviation are also calculated. The columns which have non-numeric data types like timestamp / string / struct type etc are automatically not considered here.
+
+|column\_name|count|mean |stddev| min |  max  | 0.03 percentile|0.04 percentile|0.5 percentile|
+|:----------:|:---:|:---:|:----:|:---:|:-----:|:--------------:|:-------------:|:------------:|
+|target      |26147|0.047|0.2129|0    |1      |0               |0              |0             |
+|amount      |26147|0.079|0.2707|0    |1      |0               |0              |0             |
+
+### Analyzing event rates across variables' percentile buckets
+```python
+data_bivariate = zdata.bivariate(0.03, 0.04, 0.5)
+data_bivariate
+```
+>.bivariate() returns a pandas dataframe containing the event rate seen across percentile distributions of each numeric column. Specific percentiles can be passed as arguements. In case no arguements are passed, these percentiles are calculated by default 0.01, 0.25, 0.5. 0.75, 0.99. In addition to these percentiles, the count of observations, the mean, the minimum value, the maximum value and standard deviation are also calculated. The columns which have non-numeric data types like timestamp / string / struct type etc are automatically not considered here.
+
+|column\_name|bucket|num\_records | min |  max  | num\_events|event\_rate|
+|:----------:|:----:|:-----------:|:---:|:-----:|:----------:|:---------:|
+|amount      |0     |24086        |0    |0      |4817        |20.2       |
+|amount      |1     |24086        |0    |0      |1           |0          |
+|amount      |2     |24086        |0    |0      |1           |0          |
+|amount      |3     |24086        |0    |1      |12023       |50         |
+|amount      |4     |24086        |1    |1      |24086       |100        |
+
+### Oversampling the data
+```python
+print (zdata.count)
+zdata.oversample(0.4)
+print (zdata.count)
+```
+>
