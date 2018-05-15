@@ -5,6 +5,8 @@ from pyspark.sql.functions import explode, array, lit, struct
 from pyspark.sql.window import Window
 from pyspark.ml.feature import Bucketizer
 
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.appName("Python Spark SQL").getOrCreate()
 
 class OutsideRangeError(ValueError):
     pass
@@ -12,6 +14,30 @@ class OutsideRangeError(ValueError):
 
 class InvalidArgumentError(ValueError):
     pass
+
+def read_spark_dataframe(filelocation, filetype):
+    """
+    This helps us read various filetypes directly into pyspark datframes. This is an allround solution.
+    """
+    
+    ftype = {
+      'avro' : "com.databricks.spark.avro",
+      'parquet' : "parquet",
+      'csv' : "com.databricks.spark.csv",
+      'json' : "json" 
+    }
+    
+    return spark.read \
+    .format(ftype[''.join(e for e in filetype if e.isalnum())]) \
+    .option("header", "true") \
+    .option("inferSchema", "true") \
+    .load(filelocation)
+      
+def zread(filelocation):
+    """
+    This helps read Zeus objects from gcloud
+    """
+    
 
 
 class Zeus(object):
@@ -211,3 +237,6 @@ class Zeus(object):
 
         else:
             warnings.warn('base event rate >= provided ratio; no undersampling performed')
+    
+    def write(self, location):
+        
