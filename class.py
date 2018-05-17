@@ -5,13 +5,19 @@ from pyspark.sql.functions import explode, array, lit, struct
 from pyspark.sql.window import Window
 from pyspark.ml.feature import Bucketizer
 
-
 class OutsideRangeError(ValueError):
     pass
 
 
 class InvalidArgumentError(ValueError):
     pass
+
+      
+#def zread(filelocation):
+#    """
+#    This helps read Zeus objects from gcloud
+#    """
+    
 
 
 class Zeus(object):
